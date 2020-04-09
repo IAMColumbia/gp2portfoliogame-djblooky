@@ -64,15 +64,15 @@ public class Player : MonoBehaviour
         Destroy(this);
     }
 
-    private void OnCollisionEnter2D() //when kirby collides with ground
-    {
-        controller.IsJumping = false;
-        this.Direction = new Vector2(0, 0);
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Door")
+        if (collision.CompareTag("Platform"))
+        {
+            controller.IsJumping = false;
+            //this.Direction = new Vector2(0, 0);
+        }
+
+        if (collision.CompareTag("Door"))
         {
             win = true;
         }

@@ -4,11 +4,14 @@
 [RequireComponent(typeof(BoxCollider2D))]
 public class PlayerController : MonoBehaviour
 {
+    //Components
+    MoveComponent moveComponent;
+    Rigidbody2D playerRB;
+
+    //Variables
     public Vector2 direction;
     private Vector2 keyDirection;
-
     public int thrust = 5;
-
     public bool IsKeyDown
     {
         get
@@ -17,53 +20,84 @@ public class PlayerController : MonoBehaviour
             return true;
         }
     }
-
     public bool IsJumping { get; set; }
 
     private void Awake()
     {
+        AssignComponents();
         SetUpController();
+    }
+
+    void AssignComponents()
+    {
+        playerRB = GetComponent<Rigidbody2D>();
+        moveComponent = new MoveComponent();
     }
 
     private void SetUpController()
     {
-        GetComponent<Rigidbody2D>().freezeRotation = true;
+        playerRB.freezeRotation = true;
         direction = new Vector2(0, 0);
         keyDirection = new Vector2(0, 0);
-        IsJumping = false;
-
+        IsJumping = false;  
     }
 
-    private void Update()
+    ICommand GetMoveCommandFromKey()
     {
-        keyDirection.x = keyDirection.y = 0;
+        Command command = null;
 
-        //Keyboard
         if (Input.GetKey(KeyCode.D))
         {
-            keyDirection.x += 1;
+            command = new MoveRightCommand();
+            //keyDirection.x += 1;
+            keyDirection.x = moveComponent.X;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            keyDirection.x += -1;
+            command = new MoveLeftCommand();
+            //keyDirection.x += -1;
+            keyDirection.x = -moveComponent.X;
         }
 
+        return command;
+    }
+
+    void GetJumpFromKey()
+    {
         if (Input.GetKeyDown(KeyCode.W) && !IsJumping)
         {
-            GetComponent<Rigidbody2D>().AddForce(transform.up * thrust, ForceMode2D.Impulse);
+            playerRB.AddForce(transform.up * thrust, ForceMode2D.Impulse);
             //keyDirection.y += 1;
             IsJumping = true;
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && !IsJumping)
         {
-            GetComponent<Rigidbody2D>().AddForce(transform.up * thrust, ForceMode2D.Impulse);
+            playerRB.AddForce(transform.up * thrust, ForceMode2D.Impulse);
             //keyDirection.y += 1;
             IsJumping = true;
         }
+    }
+
+    void UpdateMovement()
+    {
+        keyDirection.x = keyDirection.y = 0;
+
+        ICommand command = GetMoveCommandFromKey();
+        if (command != null)
+        {
+            command.Execute(moveComponent);
+        }
+   
+        GetJumpFromKey();
 
         direction += keyDirection;
         direction.Normalize();
+    }
+
+    private void Update()
+    {
+        UpdateMovement();
     }
 
 }
