@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using TMPro;
 
 [RequireComponent(typeof(WindowManager))]
 public class Level : MonoBehaviour
 {
     public Player player; 
     private WindowManager windowManager;
-    public Text LevelText;
+    public TextMeshProUGUI LevelText;
 
     private void Awake()
     {
@@ -31,7 +31,7 @@ public class Level : MonoBehaviour
     {
         if (!player.alive)
         {
-            LevelText.text = "Game Over!\n";
+            LevelText.text = "Game Over! ";
             RestartGame();
         }
     }
@@ -40,7 +40,7 @@ public class Level : MonoBehaviour
     {
         if (player.win)
         {
-            LevelText.text = "You Win!\n";
+            LevelText.text = "You Win! ";
             RestartGame();
         }     
     }
