@@ -4,9 +4,9 @@ using UnityEngine;
 
 public interface IWindow 
 {
-    public string name { get; set; }
+    string name { get; set; }
     WindowState _state { get; set; }
-    public WindowState State { get; set; }
+    WindowState State { get; set; }
 
     void Log(string s);
 }
