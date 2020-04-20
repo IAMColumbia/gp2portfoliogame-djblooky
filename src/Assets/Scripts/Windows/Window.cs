@@ -2,10 +2,10 @@
 
 public enum WindowState { Still, BeingDragged, Released, NearAnotherWindow, Connected}
 
-public class Window
+public class Window : IWindow
 {
-    public string name;
-    protected WindowState _state;
+    public string name { get; set; }
+    public WindowState _state { get; set; }
     public WindowState State
     {
         get { return _state; }
