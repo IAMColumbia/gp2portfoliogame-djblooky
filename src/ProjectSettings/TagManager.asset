@@ -8,6 +8,7 @@ TagManager:
   - Platform
   - WindowFrame
   - Door
+  - Key
   layers:
   - Default
   - TransparentFX
