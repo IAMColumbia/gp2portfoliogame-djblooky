@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     public float Speed = 5f;
     public bool alive = true;
     public bool win = false;
-    private bool hasKey = false;
+    public bool hasKey = false;
 
     public Character character { get; protected set; }
 
