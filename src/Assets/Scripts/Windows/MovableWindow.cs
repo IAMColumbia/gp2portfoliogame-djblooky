@@ -10,16 +10,22 @@ public class MovableWindow : MonoBehaviour
 
     public Window window { get; protected set; }
 
-    List<MovableWindow> windowsConnectedToThisOne;
+    //List<MovableWindow> windowsConnectedToThisOne;
 
     private void Awake()
-    {
+    { 
         OriginalFrameColor = this.transform.gameObject.GetComponentInChildren<SpriteRenderer>().color; //set original window color
        // GetComponentInChildren<PolygonCollider2D>().enabled = true; //enable polygon collider
     }
 
+    private void GetPlayerFromScene()
+    {
+       // player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+    }
+
     void Start()
     {
+       // GetPlayerFromScene();
         CreateWindow();
     }
 
@@ -104,5 +110,25 @@ public class MovableWindow : MonoBehaviour
         }
     }
 
-   
+    #region Player In Window
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            collision.gameObject.transform.SetParent(this.transform); //parent player to window
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player")) //unparent player
+        {
+            collision.gameObject.transform.SetParent(null);
+        }
+    }
+
+    #endregion
+
+
 }
