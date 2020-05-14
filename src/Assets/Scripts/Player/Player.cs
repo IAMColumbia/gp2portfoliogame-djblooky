@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public float Speed = 5f;
     public bool alive = true;
     public bool win = false;
+    public bool hasKey = false;
 
     public Character character { get; protected set; }
 
@@ -72,9 +73,15 @@ public class Player : MonoBehaviour
             //this.Direction = new Vector2(0, 0);
         }
 
-        if (collision.CompareTag("Door"))
+        if (collision.CompareTag("Door") && hasKey)
         {
             win = true;
+        }
+
+        if (collision.CompareTag("Key"))
+        {
+            hasKey = true;
+            Destroy(collision.gameObject);
         }
     }
 
